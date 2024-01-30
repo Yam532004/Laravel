@@ -24,3 +24,4 @@ Route::get('/unicode', function () {
 Route::get('/sanpham', function () {
     return view('product');
 });
+
