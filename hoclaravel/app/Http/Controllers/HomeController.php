@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Validator;
 use  App\Rules\UpperCase;
 
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
+// use DB;
+
 
 class HomeController extends Controller
 {
@@ -18,6 +21,11 @@ class HomeController extends Controller
         $this->data['title'] = "Training programmer";
         $this->data['message'] = "Register Successfull";
 
+    //    $users = DB::select(' SELECT * FROM users WHERE email = :email', [
+    //     'email' => 'yam532004@gmail.com'
+    //    ]);
+
+    //    dd($users);
         return view('clients.home', $this->data);
     }
 

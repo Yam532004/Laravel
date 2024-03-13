@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Response;
+use App\Http\Controllers\UsersController;
 
 
 
@@ -106,3 +107,8 @@ Route::get('/download-image', [HomeController::class, 'downloadImage']
 //Tai doc
 Route::get('/download-doc', [HomeController::class, 'downloadDoc']
 )->name('download-doc');
+
+//Users
+Route::prefix('/users')->group(function (){
+    Route::get('/', [UsersController::class, 'index']);
+});
