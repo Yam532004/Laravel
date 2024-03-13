@@ -38,18 +38,10 @@ class HomeController extends Controller
     public function postAdd(ProductRequest $ProductRequest)
     {
         $rules = [
-            'product_name' => ['required', 'min:6', function ($value, $fail){
-                isUpperCase($value,'Truong :attribute khong hop le', $fail);
-            }],
-            'product_price' => ['required','integer', new UpperCase],
+            'product_name' => ['required', 'min:6'],
+            'product_price' => ['required', 'integer'],
         ];
 
-        // $messages = [
-        //     'product_name.required' => 'product_name of product is required',
-        //     'product_name.min' => 'product_name of product no least as :min character',
-        //     'product_price.required' => 'product_price of product is required',
-        //     'product_price.integer' => 'product_price of product must be Integer'
-        // ];
         $messages = [
             'required' => 'The :attribute of product is required',
             'min' => 'The :attribute of product no least as :min character',
@@ -61,14 +53,19 @@ class HomeController extends Controller
             'product_name' => 'The name of product',
             'product_price' => 'The price of product'
         ];
-        $validate = Validator::make($ProductRequest->all(), $rules, $messages, $attribute);
+        // $validate = Validator::make($ProductRequest->all(), $rules, $messages, $attribute);
+        // $validate->validate();
+
+        // $ProductRequest->validate($rules, $messages);
+        
+        return response()->json(['status' => 'success']);
         //$validate->validate();
-        if ($validate->fails()) {
-            $validate->errors()->add('msg', 'Please recheck your data');
-        } else {
-            return redirect()->route('product')->with('msg', 'Validate is successful');
-        }
-        return back()->withErrors($validate);
+        // if ($validate->fails()) {
+        //     $validate->errors()->add('msg', 'Please recheck your data');
+        // } else {
+        //     return redirect()->route('product')->with('msg', 'Validate is successful');
+        // }
+        // return back()->withErrors($validate);
 
         // $ProductRequest->validate($rules, $message);
     }
@@ -80,10 +77,10 @@ class HomeController extends Controller
 
     public function getNews()
     {
-    return 'Danh sach tin tuc';
+        return 'Danh sach tin tuc';
     }
 
-public function getCategory($id)
+    public function getCategory($id)
 
     {
         return 'Chuyen muc: ' . $id;
