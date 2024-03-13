@@ -59,7 +59,7 @@ Route::middleware('auth.admin')->prefix('admin')->group(function () {
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('san-pham', [HomeController::class, 'products'])->name('product');
-Route::get('add-product', [HomeController::class, 'getAdd']);
+Route::get('add-product', [HomeController::class, 'getAdd'])->name('post-add');
 Route::post('add-product', [HomeController::class, 'postAdd']);
 Route::put('add-product', [HomeController::class, 'postAdd']);
 
