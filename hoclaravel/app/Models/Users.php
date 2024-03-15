@@ -19,7 +19,22 @@ class Users extends Model
 
     public function addUser($data)
     {
-        DB::insert('INSERT INTO users(fullname, email, create_at) values (?, ?, ?)',
-        $data);
+        DB::insert(
+            'INSERT INTO users(fullname, email, create_at) values (?, ?, ?)',
+            $data
+        );
     }
+
+    public function getDetail($id)
+    {
+        return DB::select('SELECT * FROM ' . $this->users . ' WHERE id = ?', [$id]);
+    }
+
+
+    public function updateUser($data, $id) {
+        $data[]= $id;
+        return DB::update('UPDATE ' . $this->users . ' SET fullname = ?, email = ?, update_at = ? WHERE id = ?', $data);
+    }
+
+
 }
