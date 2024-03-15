@@ -116,5 +116,7 @@ Route::prefix('/users')->name('users.')->group(function (){
 
     Route::post('/add', [UsersController::class, 'postAdd'])->name('post-add');
 
+    Route::get('/edit/{id}', [UsersController::class, 'getEdit'])->name('edit');
 
+    Route::post('/update', [UsersController::class, 'postEdit'])->name('post-edit');
 });
