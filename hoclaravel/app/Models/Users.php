@@ -31,17 +31,38 @@ class Users extends Model
     }
 
 
-    public function updateUser($data, $id) {
-        $data[]= $id;
+    public function updateUser($data, $id)
+    {
+        $data[] = $id;
         return DB::update('UPDATE ' . $this->users . ' SET fullname = ?, email = ?, update_at = ? WHERE id = ?', $data);
     }
 
-    public function deleteUser($id){
-        return DB::delete('DELETE FROM '. $this->users .' WHERE id=?', [$id]);
+    public function deleteUser($id)
+    {
+        return DB::delete('DELETE FROM ' . $this->users . ' WHERE id=?', [$id]);
     }
 
-    public function statementUser($sql){
+    public function statementUser($sql)
+    {
         return DB::statement($sql);
     }
 
+    public function learnQueryBuider()
+    {
+        //GET all item
+        $list = DB::table($this->users)
+            ->select('email', 'fullname')
+            // ->where('id', 6)
+            // ->where('id', '<>', 5)
+            // ->where('id', '<', 5)
+            //  ->where('id', '>=', 4)
+            //  ->where('id', '<=', 6)
+           ->where('id', 6)
+           ->where('fullname', 'Y Âm hii hii')
+            ->get();
+        dd($list);
+        //GET once iem 
+        $detail = DB::table($this->users)->first();
+        dd($detail);
+    }
 }

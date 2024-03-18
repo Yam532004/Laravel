@@ -17,9 +17,10 @@ class UsersController extends Controller
     }
     public function index()
     {
-        $statementUser = $this->users->statementUser('SELECT * FROM users');
-        dd($statementUser);
+        // $statementUser = $this->users->statementUser('SELECT * FROM users');
+        // dd($statementUser);
         $title = "List user";
+        $this->users->learnQueryBuider();
         $userList = $this->users->getAllUsers();
         return view('clients.users.users-list', compact('title', 'userList'));
     }
