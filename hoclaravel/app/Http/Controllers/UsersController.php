@@ -17,6 +17,8 @@ class UsersController extends Controller
     }
     public function index()
     {
+        $statementUser = $this->users->statementUser('SELECT * FROM users');
+        dd($statementUser);
         $title = "List user";
         $userList = $this->users->getAllUsers();
         return view('clients.users.users-list', compact('title', 'userList'));
@@ -94,5 +96,27 @@ class UsersController extends Controller
         $this->users->updateUser($dataUpdate, $id);
 
         return back()->with('msg', 'Update successful!');
+    }
+
+    public function delete($id){
+        if (!empty($id)){
+            $userDetail = $this->users->getDetail($id);
+            if (!empty($userDetail)){
+                $deleteUser = $this->users->deleteUser($id);
+                if($deleteUser){
+                    $msg = 'Delete successfull!';
+                }
+                else{
+                    $msg = "Ban khong the xoa nguoi dung luc nay. Vui long thu lai sau";
+                }
+            }
+            else{
+                $msg = "Nguoi dung khong ton tai";
+            }
+        }
+        else{
+            $msg = "Lien ket khong ton tai";
+        }
+        return redirect ()->route('users.index')->with('msg',$msg);
     }
 }
