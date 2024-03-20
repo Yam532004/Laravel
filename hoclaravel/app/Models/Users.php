@@ -50,17 +50,23 @@ class Users extends Model
     public function learnQueryBuider()
     {
         //GET all item
-        $list = DB::table($this->users)
-            ->select('email', 'fullname')
-            // ->where('id', 6)
-            // ->where('id', '<>', 5)
-            // ->where('id', '<', 5)
-            //  ->where('id', '>=', 4)
-            //  ->where('id', '<=', 6)
-           ->where('id', 6)
-           ->where('fullname', 'Y Âm hii hii')
+        DB::enableQueryLog();
+        $id = 6;
+        $lists = DB::table($this->users)
+            ->select('email', 'fullname', 'id', 'update_at')
+            //     ->where('id', 6)
+            //    ->where(function($query) use ($id){
+            //         $query->where('id', '<', $id)->orwhere('id', '>', $id);
+            //    })
+            // ->where('fullname', 'like', '%bfhefeer%')
+            // ->whereBetween('id', [4, 6])
+            // ->wherenotBetween('id', [4, 6])
+            // ->whereNotIn('id', [4, 6])
+            ->whereNotNull('update_at')
             ->get();
-        dd($list);
+        $sql =  DB::getQueryLog();
+        dd($lists);
+        dd($sql);
         //GET once iem 
         $detail = DB::table($this->users)->first();
         dd($detail);
