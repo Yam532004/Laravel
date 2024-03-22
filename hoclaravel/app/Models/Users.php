@@ -54,23 +54,36 @@ class Users extends Model
         // $id = 6;
         // $lists = DB::table($this->users)
         //     ->select('email', 'fullname', 'id', 'update_at', 'create_at')
-            //     ->where('id', 6)
-            //    ->where(function($query) use ($id){
-            //         $query->where('id', '<', $id)->orwhere('id', '>', $id);
-            //    })
-            // ->where('fullname', 'like', '%bfhefeer%')
-            // ->whereBetween('id', [4, 6])
-            // ->wherenotBetween('id', [4, 6])
-            // ->whereNotIn('id', [4, 6])
-            // ->whereNotNull('update_at')
-            // ->whereYear('create_at', '2024')
-            // ->whereColumn('create_at','<>', 'update_at')
+        //     ->where('id', 6)
+        //    ->where(function($query) use ($id){
+        //         $query->where('id', '<', $id)->orwhere('id', '>', $id);
+        //    })
+        // ->where('fullname', 'like', '%bfhefeer%')
+        // ->whereBetween('id', [4, 6])
+        // ->wherenotBetween('id', [4, 6])
+        // ->whereNotIn('id', [4, 6])
+        // ->whereNotNull('update_at')
+        // ->whereYear('create_at', '2024')
+        // ->whereColumn('create_at','<>', 'update_at')
 
-            // ->get();
-            //Join bảng 
-           $lists = DB::table('users')
-           ->select('users.*', 'groups.name as group name')
-            ->rightJoin('groups', 'users.group_id','=', 'groups.id')
+        // ->get();
+        //Join bảng 
+        $lists = DB::table('users')
+            //    ->select('users.*', 'groups.name as group name')
+            //     ->rightJoin('groups', 'users.group_id','=', 'groups.id')
+            // ->orderBy('create_at', 'asc')
+            // ->orderBy('id', 'desc')
+            // ->inRandomOrder()
+            // ->select(DB::raw('count(id) as email_count'), 'email', 'fullname')
+            // ->groupBy('email')
+            // ->groupBy('fullname')
+
+            // ->having('email_count', '>=', 2)
+            // ->limit(2)
+            // ->offset(2)
+            ->take(2)
+            ->skip(2)
+
             ->get();
         $sql =  DB::getQueryLog();
         dd($lists);
