@@ -68,7 +68,7 @@ class Users extends Model
 
         // ->get();
         //Join bảng 
-        $lists = DB::table('users')
+        // $lists = DB::table('users')
             //    ->select('users.*', 'groups.name as group name')
             //     ->rightJoin('groups', 'users.group_id','=', 'groups.id')
             // ->orderBy('create_at', 'asc')
@@ -81,13 +81,47 @@ class Users extends Model
             // ->having('email_count', '>=', 2)
             // ->limit(2)
             // ->offset(2)
-            ->take(2)
-            ->skip(2)
+            // ->take(2)
+            // ->skip(2)
+            // ->get();
+        // dd($lists);
+        // $status = DB::table('users')->insert([
+        //     'fullname' =>'PNT',
+        //     'email' => 'PNT@gmail.com',
+        //     'group_id' => 1,
+        //     'create_at' => date('Y-m-d H:i:s')
 
-            ->get();
+        // ]);
+        // dd($status);
+        // $statusId = DB::getPdo()->lastInsertId();
+
+        // $lastId = DB::table('users')->insertGetId([
+        //     'fullname' =>'PNT',
+        //         'email' => 'PNT@gmail.com',
+        //         'group_id' => 1,
+        //         'create_at' => date('Y-m-d H:i:s')
+        // ]);
+        // dd($lastId);
+
+        // $status = DB::table('users')->where('id', 11)
+        // ->update([
+        //     'fullname' => 'Phan Ngoc Trieu', 
+        //     'email' => 'PhanTRieu@gmail.com',
+        //     'update_at'=> date('Y-m-d H:i:s')
+        // ]) ;
+        // $status = DB::table('users')
+        // ->where('id', 11)
+        // ->delete();
+
+        //Dem so ban ghi 
+
+        $lists = DB::table('users')->where('id', '>=', 6)->get();
+        $count = count($lists);
+
+        dd($count);
+
         $sql =  DB::getQueryLog();
-        dd($lists);
-        // dd($sql);
+        dd($sql);
         //GET once iem 
         $detail = DB::table($this->users)->first();
         dd($detail);
