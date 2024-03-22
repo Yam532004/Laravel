@@ -69,21 +69,21 @@ class Users extends Model
         // ->get();
         //Join bảng 
         // $lists = DB::table('users')
-            //    ->select('users.*', 'groups.name as group name')
-            //     ->rightJoin('groups', 'users.group_id','=', 'groups.id')
-            // ->orderBy('create_at', 'asc')
-            // ->orderBy('id', 'desc')
-            // ->inRandomOrder()
-            // ->select(DB::raw('count(id) as email_count'), 'email', 'fullname')
-            // ->groupBy('email')
-            // ->groupBy('fullname')
+        //    ->select('users.*', 'groups.name as group name')
+        //     ->rightJoin('groups', 'users.group_id','=', 'groups.id')
+        // ->orderBy('create_at', 'asc')
+        // ->orderBy('id', 'desc')
+        // ->inRandomOrder()
+        // ->select(DB::raw('count(id) as email_count'), 'email', 'fullname')
+        // ->groupBy('email')
+        // ->groupBy('fullname')
 
-            // ->having('email_count', '>=', 2)
-            // ->limit(2)
-            // ->offset(2)
-            // ->take(2)
-            // ->skip(2)
-            // ->get();
+        // ->having('email_count', '>=', 2)
+        // ->limit(2)
+        // ->offset(2)
+        // ->take(2)
+        // ->skip(2)
+        // ->get();
         // dd($lists);
         // $status = DB::table('users')->insert([
         //     'fullname' =>'PNT',
@@ -115,13 +115,36 @@ class Users extends Model
 
         //Dem so ban ghi 
 
-        $lists = DB::table('users')->where('id', '>=', 6)->get();
-        $count = count($lists);
+        // $lists = DB::table('users')->where('id', '>=', 6)->get();
+        // $count = count($lists);
 
-        dd($count);
-
+        // dd($count);
+        $lists = DB::table('users')
+            // ->selectRaw('email, fullname, count(id) as email_count')
+            // ->where(DB::raw('id>6'))
+            // ->where('id', '>', 6)
+            // ->groupBy('email')
+            // ->groupBy('fullname')
+            // ->orwhereRaw('id > 6')
+            // ->orderByRaw('create_at DESC, update_at ASC')
+            // ->groupByRaw('email, fullname')
+            // ->havingRaw('count(id) >?', [6])
+            // ->where(
+            //     'group_id',
+            //     '=',
+            //     function ($query) {
+            //         $query->select('id')
+            //             ->from('groups')
+            //             ->where('name', '=', 'Addministration');
+            //     }
+            // )
+            // ->select('email', DB::raw('(SELECT count(id) FROM "groups") as group_count'))
+            ->selectRaw('email, (SELECT count(id) FROM `groups` as group_count') 
+            ->get();
         $sql =  DB::getQueryLog();
-        dd($sql);
+        // dd($sql);
+        dd($lists);
+
         //GET once iem 
         $detail = DB::table($this->users)->first();
         dd($detail);
