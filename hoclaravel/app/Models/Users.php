@@ -10,10 +10,28 @@ use Illuminate\Support\Facades\DB;
 class Users extends Model
 {
     use HasFactory;
-    protected $users = 'users';
-    public function getAllUsers()
+    protected $table = 'users';
+    public function getAllUsers($filters = [], $keyword = null)
     {
-        $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
+        // $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
+        // DB::enableQueryLog();
+        $users = DB::table($this->table)
+        ->select('users.*', 'groups.name as group_name')
+        ->join('groups', 'users.group_id', '=', 'groups.id')
+        ->orderBy('users.create_at', 'DESC');
+        if (!empty($filters)){
+            $users = $users->where($filters);
+        }
+
+        if (!empty($keyword)){
+            $users = $users->where(function ($query) use ($keyword){
+                $query ->orwhere ('fullname', 'like', '%'.$keyword. '%');
+                $query ->orwhere ('email', 'like', '%'.$keyword. '%');
+            });
+        }
+        // $sql =  DB::getQueryLog();
+        // dd($sql);
+        $users= $users->get();
         return $users;
     }
 
