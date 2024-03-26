@@ -42,8 +42,31 @@ class UsersController extends Controller
         if (!empty($request->keyword)){
             $keyword = $request->keyword;
         }
-        $userList = $this->users->getAllUsers($filters, $keyword);
-        return view('clients.users.users-list', compact('title', 'userList'));
+
+        // Xu ly logic sap xep
+
+        $sortBy = $request->input('sort-by');
+        $sortType = $request->input('sort-type');
+        $allSortType = ['asc', 'desc'];
+
+        if(!empty($sortType) && in_array($sortType, $allSortType)){
+            if($sortType == 'desc'){
+                $sortType = 'asc';
+            }
+            else{
+                $sortType = 'asc';
+            }
+        }else{
+            $sortType = 'asc';
+        }
+
+        $sortArr =[
+            'sortBy'=>$sortBy,
+            'sortType'=> $sortType
+        ];
+
+        $userList = $this->users->getAllUsers($filters, $keyword, $sortArr);
+        return view('clients.users.users-list', compact('title', 'userList',  'sortType'));
     }
 
     public function add()
