@@ -80,4 +80,9 @@
         @endif
     </tbody>
 </table>
+<!-- CHuyen trang -->
+<div class="d-flex justify-content-end">
+{{ $userList->Links()}}
+
+</div>
 @endsection
