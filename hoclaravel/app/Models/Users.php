@@ -11,7 +11,7 @@ class Users extends Model
 {
     use HasFactory;
     protected $table = 'users';
-    public function getAllUsers($filters = [], $keyword = null, $sortByArr = null )
+    public function getAllUsers($filters = [], $keyword = null, $sortByArr = null, $perPage = null )
     {
         // $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
         // DB::enableQueryLog();
@@ -42,7 +42,13 @@ class Users extends Model
         }
         // $sql =  DB::getQueryLog();
         // dd($sql);
-        $users= $users->get();
+        // $users= $users->get();
+        if(!empty($perPage)){
+            $users = $users->paginate($perPage)->withQueryString();
+        }else{
+            $users = $users->get();
+        }
+
         return $users;
     }
 
