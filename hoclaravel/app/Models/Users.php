@@ -64,14 +64,15 @@ class Users extends Model
 
     public function getDetail($id)
     {
-        return DB::select('SELECT * FROM ' . $this->users . ' WHERE id = ?', [$id]);
+        return DB::select('SELECT * FROM ' . $this->table . ' WHERE id = '. $id);
     }
 
 
     public function updateUser($data, $id)
     {
-        $data[] = $id;
-        return DB::update('UPDATE ' . $this->users . ' SET fullname = ?, email = ?, update_at = ? WHERE id = ?', $data);
+        // $data[] = $id;
+        // return DB::update('UPDATE ' . $this->users . ' SET fullname = ?, email = ?, update_at = ? WHERE id = ?', $data);
+        return DB::table($this->table)->where('id', $id)->update($data);
     }
 
     public function deleteUser($id)
