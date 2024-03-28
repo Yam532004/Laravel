@@ -6,6 +6,7 @@ use App\Models\Users;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\UsersRequest;
 
 class UsersController extends Controller
 {
@@ -76,31 +77,8 @@ class UsersController extends Controller
         $allGroups = getAllGroup();
         return view('clients.users.add', compact('title', 'allGroups'));
     }
-    public function postAdd(Request $request)
+    public function postAdd(UsersRequest $request)
     {
-        $request->validate([
-            'fullname' => 'required|min:5',
-            'email' => 'required|email|unique:users',
-            'group_id' => ['required', 'integer',function ($attribute, $value, $fail){
-                if ($value == 0){
-                    $fail ('Bat buoc phai chon nhom');
-                }
-            }],
-            'status' => 'required|integer'
-        ], [
-            'fullname.required' => 'Full name is required',
-            'fullname.min' => 'Full name is required as least 5 lenght',
-            'email.required' => 'Email is required',
-            'email.email' => 'Email is type email',
-            'email.unnique' => 'Email is already',
-            'group_id.required' => 'Nhom khong duoc de trong',
-            'group_id.integer' => 'Nhom khong hop le',
-            'status.required' => 'Statua khong duoc de trong',
-            'status.integer' => 'Statua khong hop le',
-
-
-
-        ]);
         $dataInsert = [
            'fullname' =>  $request->fullname,
            'email' =>  $request->email,
@@ -128,33 +106,27 @@ class UsersController extends Controller
         } else {
             return redirect()->route('users.index')->with('msg', 'Lien ket khong ton tai');
         }
-        return view('clients.users.edit', compact('title', 'userDetail'));
+
+         $allGroups = getAllGroup();
+        return view('clients.users.edit', compact('title', 'userDetail', 'allGroups'));
     }
 
-    public function postEdit(Request $request)
+    public function postEdit(UsersRequest $request)
     {
-        $id = session('id');
+       
         if (empty($id)) {
             return back()->with('Lien ket khong ton tai');
         }
-        $request->validate([
-            'fullname' => 'required|min:5',
-            'email' => 'required|email|unique:users,email' . $id
-        ], [
-            'fullname.required' => 'Full name is required',
-            'fullname.min' => 'Full name is required as least 5 lenght',
-            'email.required' => 'Email is required',
-            'email.email' => 'Email is type email',
-            'email.unnique' => 'Email is already',
-        ]);
+        $dataInsert = [
+            'fullname' =>  $request->fullname,
+            'email' =>  $request->email,
+            'group_id' =>  $request->group_id,
+            'status' =>  $request->status,
+            'update_at' => date('Y-m-d H:i:s')
+             
+         ];
 
-        $dataUpdate = [
-            $request->fullname,
-            $request->email,
-            date('Y-m-d H:i:s')
-        ];
-
-        $this->users->updateUser($dataUpdate, $id);
+        $this->users->updateUser($dataInsert, $id);
 
         return back()->with('msg', 'Update successful!');
     }
