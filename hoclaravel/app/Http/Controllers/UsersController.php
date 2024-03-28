@@ -73,26 +73,41 @@ class UsersController extends Controller
     public function add()
     {
         $title = "Add user";
-        return view('clients.users.add', compact('title'));
+        $allGroups = getAllGroup();
+        return view('clients.users.add', compact('title', 'allGroups'));
     }
     public function postAdd(Request $request)
     {
         $request->validate([
             'fullname' => 'required|min:5',
-            'email' => 'required|email|unique:users'
+            'email' => 'required|email|unique:users',
+            'group_id' => ['required', 'integer',function ($attribute, $value, $fail){
+                if ($value == 0){
+                    $fail ('Bat buoc phai chon nhom');
+                }
+            }],
+            'status' => 'required|integer'
         ], [
             'fullname.required' => 'Full name is required',
             'fullname.min' => 'Full name is required as least 5 lenght',
             'email.required' => 'Email is required',
             'email.email' => 'Email is type email',
             'email.unnique' => 'Email is already',
+            'group_id.required' => 'Nhom khong duoc de trong',
+            'group_id.integer' => 'Nhom khong hop le',
+            'status.required' => 'Statua khong duoc de trong',
+            'status.integer' => 'Statua khong hop le',
+
 
 
         ]);
         $dataInsert = [
-            $request->fullname,
-            $request->email,
-            date('Y-m-d H:i:s')
+           'fullname' =>  $request->fullname,
+           'email' =>  $request->email,
+           'group_id' =>  $request->group_id,
+           'status' =>  $request->status,
+           'create_at' => date('Y-m-d H:i:s')
+            
         ];
 
         $this->users->addUser($dataInsert);
