@@ -11,18 +11,18 @@ class Users extends Model
 {
     use HasFactory;
     protected $table = 'users';
-    public function getAllUsers($filters = [], $keyword = null, $sortByArr = null, $perPage = null )
+    public function getAllUsers($filters = [], $keyword = null, $sortByArr = null, $perPage = null)
     {
         // $users = DB::select('SELECT * FROM users ORDER BY create_at DESC');
         // DB::enableQueryLog();
         $users = DB::table($this->table)
-        ->select('users.*', 'groups.name as group_name')
-        ->join('groups', 'users.group_id', '=', 'groups.id');
+            ->select('users.*', 'groups.name as group_name')
+            ->join('groups', 'users.group_id', '=', 'groups.id');
         $orderBy = 'users.create_at';
         $orderType = 'desc';
 
-        if (!empty($sortByArr) && is_array($sortByArr)){
-            if(!empty($sortByArr['sortBy'])&& !empty($sortByArr['sortType'])){
+        if (!empty($sortByArr) && is_array($sortByArr)) {
+            if (!empty($sortByArr['sortBy']) && !empty($sortByArr['sortType'])) {
                 $orderBy = trim($sortByArr['sortBy']);
                 $orderType = trim($sortByArr['sortType']);
             }
@@ -30,22 +30,22 @@ class Users extends Model
 
         $users = $users->orderBy($orderBy, $orderType);
 
-        if (!empty($filters)){
+        if (!empty($filters)) {
             $users = $users->where($filters);
         }
 
-        if (!empty($keyword)){
-            $users = $users->where(function ($query) use ($keyword){
-                $query ->orwhere ('fullname', 'like', '%'.$keyword. '%');
-                $query ->orwhere ('email', 'like', '%'.$keyword. '%');
+        if (!empty($keyword)) {
+            $users = $users->where(function ($query) use ($keyword) {
+                $query->orwhere('fullname', 'like', '%' . $keyword . '%');
+                $query->orwhere('email', 'like', '%' . $keyword . '%');
             });
         }
         // $sql =  DB::getQueryLog();
         // dd($sql);
         // $users= $users->get();
-        if(!empty($perPage)){
+        if (!empty($perPage)) {
             $users = $users->paginate($perPage)->withQueryString();
-        }else{
+        } else {
             $users = $users->get();
         }
 
@@ -54,10 +54,12 @@ class Users extends Model
 
     public function addUser($data)
     {
-        DB::insert(
-            'INSERT INTO users(fullname, email, create_at) values (?, ?, ?)',
-            $data
-        );
+        // DB::insert(
+        //     'INSERT INTO users(fullname, email, create_at) values (?, ?, ?)',
+        //     $data
+        // );
+
+        return  DB::table($this->table)->insert($data);
     }
 
     public function getDetail($id)
@@ -174,7 +176,7 @@ class Users extends Model
             //     }
             // )
             // ->select('email', DB::raw('(SELECT count(id) FROM "groups") as group_count'))
-            ->selectRaw('email, (SELECT count(id) FROM `groups` as group_count') 
+            ->selectRaw('email, (SELECT count(id) FROM `groups` as group_count')
             ->get();
         $sql =  DB::getQueryLog();
         // dd($sql);

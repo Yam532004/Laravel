@@ -14,7 +14,7 @@
 <form action="" method="get" class="mb-3">
     <div class="row">
       
-        <div class="col-3">
+        <div class="col-3"> 
             <select class="form-control" name="group_id">
                 <option value="0">Select group</option>
                 @if (!empty(getAllGroup()))
